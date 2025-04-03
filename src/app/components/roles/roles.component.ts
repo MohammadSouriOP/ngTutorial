@@ -1,26 +1,43 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { IRole } from '../../model/interface/role';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-roles',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './roles.component.html',
   styleUrl: './roles.component.css',
 })
-export class RolesComponent {
-  firstName: String = 'Angular TUtorial';
-  angularVersion = 'Version 18';
-  version: Number = 18;
-  isActive: boolean = false;
-  currentDate = new Date();
-  inputType: string = 'button';
-  selectedState: string = '';
+export class RolesComponent implements OnInit {
+  // firstName: String = 'Angular TUtorial';
+  // angularVersion = 'Version 18';
+  // version: Number = 18;
+  // isActive: boolean = false;
+  // currentDate = new Date();
+  // inputType: string = 'button';
+  // selectedState: string = '';
 
-  showWelcomeAlert() {
-    alert("welcome to Angular 18 Tutorial")
+  // showWelcomeAlert() {
+  //   alert("welcome to Angular 18 Tutorial")
+  // }
+
+  // showMessage(message: string) {
+  //   alert(message)
+  // }
+
+  // constructor(private http:HttpClient){} (in the past)
+  http = inject(HttpClient);
+  roleList: IRole[] = [];
+  ngOnInit(): void {
+    this.getAllRoles();
   }
-
-  showMessage(message: string) {
-    alert(message)
+  getAllRoles() {
+    this.http
+      .get('https://freeapi.miniprojectideas.com/api/ClientStrive/GetAllRoles')
+      .subscribe((res: any) => {
+        this.roleList = res.data;
+      });
   }
 }
